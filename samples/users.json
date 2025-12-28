@@ -1,0 +1,22 @@
+[
+  {"id": 1, "name": "John Smith", "email": "john@example.com", "age": 30, "phone": "1234567890", "is_active": true},
+  {"id": 2, "name": "Jane Doe", "email": "jane@example.com", "age": 25, "phone": "9876543210", "is_active": true},
+  {"id": 3, "name": "Bob Wilson", "email": "bob@example.com", "age": 45, "phone": "5551234567", "is_active": false},
+  {"id": 4, "name": "Alice Brown", "email": "alice@example.com", "age": 35, "phone": "4445556666", "is_active": true},
+  {"id": 5, "name": "Charlie Davis", "email": "charlie@example.com", "age": 28, "phone": "3334445555", "is_active": true},
+  {"id": 6, "name": "Invalid", "email": "bad-email", "age": 200, "phone": "123", "is_active": true},
+  {"id": -1, "name": "", "email": "test@test.com", "age": -5, "phone": "1234567890", "is_active": true},
+  {"id": 8, "name": "Good User", "email": "good@example.com", "age": 40, "phone": "8887776666", "is_active": true},
+  {
+    "id": 9,
+    "name": "Nested Example",
+    "email": "nested@example.com",
+    "age": 33,
+    "profile": {
+      "bio": "Test user",
+      "avatar": "avatar.png"
+    },
+    "is_active": true
+  },
+  {"id": 10, "name": "Final User", "email": "final@example.com", "age": 50, "phone": "1112223333", "is_active": false}
+]
