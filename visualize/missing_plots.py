@@ -198,7 +198,8 @@ class MissingPlots:
         ax.set_xticklabels(columns, rotation=45, ha="right")
         ax.set_xlabel("Column", fontweight="bold")
         ax.set_ylabel("Missing Percentage (%)", fontweight="bold")
-        ax.set_ylim(0, max(percentages) * 1.2 if percentages else 100)
+        max_pct = max(percentages) if percentages else 0
+        ax.set_ylim(0, max_pct * 1.2 if max_pct > 0 else 100)
         
         ax.set_title(
             f"Missing Values by Column\n"

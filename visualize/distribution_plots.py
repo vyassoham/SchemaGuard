@@ -235,10 +235,18 @@ class DistributionPlots:
         fig, ax = plt.subplots(figsize=figsize)
         
         # Create box plot
+        # Matplotlib 3.11 removed 'labels' parameter in favor of 'tick_labels'
+        import inspect
+        boxplot_kwargs = {"patch_artist": True}
+        sig = inspect.signature(ax.boxplot)
+        if "tick_labels" in sig.parameters:
+            boxplot_kwargs["tick_labels"] = columns
+        else:
+            boxplot_kwargs["labels"] = columns
+            
         bp = ax.boxplot(
             data_to_plot,
-            patch_artist=True,
-            labels=columns
+            **boxplot_kwargs
         )
         
         # Color boxes

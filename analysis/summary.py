@@ -108,17 +108,17 @@ class ValidationSummary:
             "  VALIDATION SUMMARY REPORT",
             "=" * 60,
             "",
-            f"  📄 Schema: {self.result.schema_name}",
-            f"  📁 Source: {self.source_file or 'N/A'}",
-            f"  🕐 Generated: {self.generated_at.strftime('%Y-%m-%d %H:%M:%S')}",
+            f"  Schema:    {self.result.schema_name}",
+            f"  Source:    {self.source_file or 'N/A'}",
+            f"  Generated: {self.generated_at.strftime('%Y-%m-%d %H:%M:%S')}",
             "",
             "-" * 60,
             "  VALIDATION RESULTS",
             "-" * 60,
             "",
-            f"  Total Rows:     {self.result.total_rows:,}",
-            f"  ✅ Valid Rows:   {self.result.valid_count:,} ({self.result.success_rate:.1f}%)",
-            f"  ❌ Invalid Rows: {self.result.invalid_count:,} ({self.result.error_rate:.1f}%)",
+            f"  Total Rows:   {self.result.total_rows:,}",
+            f"  Valid Rows:   {self.result.valid_count:,} ({self.result.success_rate:.1f}%)",
+            f"  Invalid Rows: {self.result.invalid_count:,} ({self.result.error_rate:.1f}%)",
             "",
         ]
         
@@ -170,10 +170,10 @@ class ValidationSummary:
             
             for issue in issues[:5]:
                 severity_icon = {
-                    "high": "🔴",
-                    "medium": "🟡",
-                    "low": "🟢"
-                }.get(issue["severity"], "⚪")
+                    "high": "[HIGH]",
+                    "medium": "[WARNING]",
+                    "low": "[INFO]"
+                }.get(issue["severity"], "[INFO]")
                 
                 lines.append(f"  {severity_icon} {issue['description']}")
             

@@ -233,7 +233,7 @@ class DataQualityMetrics:
                     pass  # Skip if numeric operations fail
         
         # Add string metrics if applicable
-        elif series.dtype == object:
+        elif pd.api.types.is_string_dtype(series) or series.dtype == object:
             str_series = series.dropna().astype(str)
             if len(str_series) > 0:
                 lengths = str_series.str.len()

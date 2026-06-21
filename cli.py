@@ -77,41 +77,41 @@ def cmd_check(args: argparse.Namespace) -> int:
     
     # Verify file exists
     if not Path(file_path).exists():
-        print(f"\n❌ Error: File not found: {file_path}")
+        print(f"\nError: File not found: {file_path}")
         return 1
     
     # Check if format is supported
     if not LoaderFactory.is_supported(file_path):
         supported = ", ".join(LoaderFactory.get_supported_extensions())
-        print(f"\n❌ Error: Unsupported file format")
+        print(f"\nError: Unsupported file format")
         print(f"   Supported formats: {supported}")
         return 1
     
     # Get schema
     try:
         schema_class = get_schema_by_name(args.schema)
-        print(f"\n📋 Schema: {schema_class.__name__}")
+        print(f"\nSchema: {schema_class.__name__}")
     except ValueError as e:
-        print(f"\n❌ Error: {e}")
+        print(f"\nError: {e}")
         return 1
     
     # Load data
-    print(f"📁 Loading: {file_path}")
+    print(f"Loading: {file_path}")
     try:
         df = LoaderFactory.load(file_path)
         print(f"   Loaded {len(df):,} rows, {len(df.columns)} columns")
     except Exception as e:
-        print(f"\n❌ Error loading file: {e}")
+        print(f"\nError loading file: {e}")
         return 1
     
     # Validate
-    print("\n🔍 Validating data...")
+    print("\nValidating data...")
     validator = UniversalValidator(schema_class)
     
     # Check column compatibility
     col_check = validator.check_columns(df)
     if not col_check["compatible"]:
-        print(f"\n⚠️  Warning: Missing required columns: {col_check['missing_required']}")
+        print(f"\nWarning: Missing required columns: {col_check['missing_required']}")
     
     result = validator.validate(df)
     
@@ -125,7 +125,7 @@ def cmd_check(args: argparse.Namespace) -> int:
     if args.output:
         output_dir = args.output
         
-        print(f"\n📊 Generating reports and plots...")
+        print(f"\nGenerating reports and plots...")
         
         # Generate all outputs
         generator = ReportGenerator(result, df, file_path)
@@ -146,7 +146,7 @@ def cmd_info(args: argparse.Namespace) -> int:
     file_path = args.file
     
     if not Path(file_path).exists():
-        print(f"❌ Error: File not found: {file_path}")
+        print(f"Error: File not found: {file_path}")
         return 1
     
     print("\n" + "=" * 50)
@@ -213,7 +213,14 @@ def cmd_schemas(args: argparse.Namespace) -> int:
 
 def main(argv: Optional[list] = None) -> int:
     """Main entry point for the CLI."""
-    
+    # Reconfigure stdout/stderr to UTF-8 to handle emojis safely on Windows
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8")
+            except Exception:
+                pass
+                
     parser = argparse.ArgumentParser(
         prog="unischema",
         description="UniSchema – Universal Data Validation & Quality Analysis Engine",
