@@ -13,12 +13,18 @@ import os
 import sys
 from pathlib import Path
 
-# Ensure the parent directory is in the path for proper imports
-parent_dir = Path(__file__).parent.parent
-if str(parent_dir) not in sys.path:
-    sys.path.insert(0, str(parent_dir))
+# Ensure root directory is in sys.path and register 'unischema' module shim
+root_dir = str(Path(__file__).resolve().parent)
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
 
-# Now import from unischema package
+if "unischema" not in sys.modules:
+    import types
+    mod = types.ModuleType("unischema")
+    mod.__path__ = [root_dir]
+    mod.__file__ = str(Path(root_dir) / "__init__.py")
+    sys.modules["unischema"] = mod
+
 from unischema.loaders import LoaderFactory
 from unischema.schema import UserSchema
 from unischema.validator import UniversalValidator

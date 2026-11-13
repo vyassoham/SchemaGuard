@@ -8,16 +8,35 @@ Provides easy access to validation, quality analysis, and report generation.
 
 import argparse
 import sys
+import types
 from pathlib import Path
 from typing import Optional, Type
 
 from pydantic import BaseModel
 
-from .loaders import LoaderFactory
-from .schema.user_schema import UserSchema, EmployeeSchema
-from .validator import UniversalValidator
-from .analysis import ValidationSummary
-from .visualize import ReportGenerator
+# Register 'unischema' module shim if running directly
+root_dir = str(Path(__file__).resolve().parent)
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
+
+if "unischema" not in sys.modules:
+    mod = types.ModuleType("unischema")
+    mod.__path__ = [root_dir]
+    mod.__file__ = str(Path(root_dir) / "__init__.py")
+    sys.modules["unischema"] = mod
+
+try:
+    from .loaders import LoaderFactory
+    from .schema.user_schema import UserSchema, EmployeeSchema
+    from .validator import UniversalValidator
+    from .analysis import ValidationSummary
+    from .visualize import ReportGenerator
+except (ImportError, ValueError):
+    from unischema.loaders import LoaderFactory
+    from unischema.schema.user_schema import UserSchema, EmployeeSchema
+    from unischema.validator import UniversalValidator
+    from unischema.analysis import ValidationSummary
+    from unischema.visualize import ReportGenerator
 
 
 # Registry of available schemas

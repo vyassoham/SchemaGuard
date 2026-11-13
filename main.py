@@ -17,17 +17,37 @@ Example:
     >>> print(f"Valid rows: {result['valid_count']}")
 """
 
+import sys
+import types
 from pathlib import Path
 from typing import Dict, Any, Optional, Type, Union
 
 import pandas as pd
 from pydantic import BaseModel
 
-from .loaders import LoaderFactory
-from .schema.user_schema import UserSchema, EmployeeSchema
-from .validator import UniversalValidator, ValidationResult
-from .analysis import DataQualityMetrics, ValidationSummary
-from .visualize import ReportGenerator
+# Register 'unischema' module shim if running directly
+root_dir = str(Path(__file__).resolve().parent)
+if root_dir not in sys.path:
+    sys.path.insert(0, root_dir)
+
+if "unischema" not in sys.modules:
+    mod = types.ModuleType("unischema")
+    mod.__path__ = [root_dir]
+    mod.__file__ = str(Path(root_dir) / "__init__.py")
+    sys.modules["unischema"] = mod
+
+try:
+    from .loaders import LoaderFactory
+    from .schema.user_schema import UserSchema, EmployeeSchema
+    from .validator import UniversalValidator, ValidationResult
+    from .analysis import DataQualityMetrics, ValidationSummary
+    from .visualize import ReportGenerator
+except (ImportError, ValueError):
+    from unischema.loaders import LoaderFactory
+    from unischema.schema.user_schema import UserSchema, EmployeeSchema
+    from unischema.validator import UniversalValidator, ValidationResult
+    from unischema.analysis import DataQualityMetrics, ValidationSummary
+    from unischema.visualize import ReportGenerator
 
 
 # Default schema registry
@@ -278,7 +298,10 @@ def register_schema(name: str, schema: Type[BaseModel]) -> None:
 # Convenience alias for CLI
 def main() -> None:
     """Entry point for the CLI."""
-    from .cli import main as cli_main
+    try:
+        from .cli import main as cli_main
+    except (ImportError, ValueError):
+        from unischema.cli import main as cli_main
     import sys
     sys.exit(cli_main())
 

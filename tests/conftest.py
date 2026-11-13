@@ -20,7 +20,7 @@ sys.modules['unischema'] = unischema
 
 
 @pytest.fixture(autouse=True)
-def mock_tabula(mocker):
+def mock_tabula(monkeypatch):
     """Mock tabula to avoid relying on Java virtual machine setup on test runner machine"""
     try:
         import tabula
@@ -33,8 +33,6 @@ def mock_tabula(mocker):
             "phone": ["1234567890", "0987654321"],
             "is_active": ["True", "False"]
         })
-        mock_read = mocker.patch("tabula.read_pdf")
-        mock_read.return_value = [dummy_df]
-        return mock_read
+        monkeypatch.setattr(tabula, "read_pdf", lambda *args, **kwargs: [dummy_df])
     except (ImportError, Exception):
-        return None
+        pass

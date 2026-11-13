@@ -78,6 +78,10 @@ def test_jsonl_loader(tmp_path, sample_data):
 
 
 def test_pdf_loader(tmp_path):
+    try:
+        import tabula
+    except ImportError:
+        pytest.skip("tabula-py is not installed. PDF loading is an optional dependency.")
     pdf_file = tmp_path / "users.pdf"
     # Create an empty file to satisfy path existence checks
     pdf_file.write_bytes(b"dummy pdf content")

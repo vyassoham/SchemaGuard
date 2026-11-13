@@ -60,10 +60,10 @@ all = ["unischema[pdf,dev]"]
 unischema = "unischema.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/yourusername/unischema"
-Documentation = "https://github.com/yourusername/unischema#readme"
-Repository = "https://github.com/yourusername/unischema.git"
-Issues = "https://github.com/yourusername/unischema/issues"
+Homepage = "https://github.com/vyassoham/SchemaGuard"
+Documentation = "https://github.com/vyassoham/SchemaGuard#readme"
+Repository = "https://github.com/vyassoham/SchemaGuard.git"
+Issues = "https://github.com/vyassoham/SchemaGuard/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
