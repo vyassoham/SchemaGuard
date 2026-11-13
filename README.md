@@ -1,8 +1,8 @@
-# UniSchema
+# SchemaGuard (UniSchema)
 
 <div align="center">
 
-# 🔍 UniSchema
+# 🔍 SchemaGuard
 
 **Universal Data Validation & Quality Analysis Engine**
 
